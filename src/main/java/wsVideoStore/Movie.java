@@ -1,4 +1,5 @@
 
+package wsVideoStore;
 
 public abstract class Movie
 {

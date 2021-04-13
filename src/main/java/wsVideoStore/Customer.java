@@ -1,17 +1,25 @@
-
+package wsVideoStore;
 import java.util.Vector;
-import java.util.Enumeration;
 
 public class Customer 
 {
+	private static final int NewReleaseMovie = 0;
 	public Customer (String name) {
 		this.name = name;
 	}
 	
-	public void addRental (Rental rental) {
-		rentals.addElement (rental);
+	public static int getNewreleasemovie() {
+		return NewReleaseMovie;
 	}
+
+	public void addRental (Rental rental) {
+		extracted(rental);
+	}
+
 	
+	private void extracted(Rental rental) {
+	}
+
 	public String getName () {
 		return name;
 	}
@@ -19,7 +27,7 @@ public class Customer
 	public String statement () {
 		double 				totalAmount 			= 0;
 		int					frequentRenterPoints 	= 0;
-		Enumeration 		rentals 				= this.rentals.elements ();
+		var 		rentals 				= this.rentals.elements ();
 		String 				result 					= "Rental Record for " + getName () + "\n";
 		
 		while (rentals.hasMoreElements ()) {
@@ -27,16 +35,16 @@ public class Customer
 			Rental 		each = (Rental)rentals.nextElement ();
 			
 			// determines the amount for each line
-			switch (each.getMovie ().getPriceCode ()) {
-				case Movie.REGULAR:
+			switch (each.getMovie ().getClass().getName()) {
+				case  "RegularMovie":
 					thisAmount += 2;
 					if (each.getDaysRented () > 2)
 						thisAmount += (each.getDaysRented () - 2) * 1.5;
 					break;
-				case Movie.NEW_RELEASE:
+				case  "NewReleaseMovie":
 					thisAmount += each.getDaysRented () * 3;
 					break;
-				case Movie.CHILDRENS:
+				case  "ChildrensMovie":
 					thisAmount += 1.5;
 					if (each.getDaysRented () > 3)
 						thisAmount += (each.getDaysRented () - 3) * 1.5;
@@ -45,7 +53,7 @@ public class Customer
 			
 			frequentRenterPoints++;
 			
-			if (each.getMovie ().getPriceCode () == Movie.NEW_RELEASE 
+			if (each.getMovie ().getClass().getName() == "NewReleaseMovie" 
 					&& each.getDaysRented () > 1)
 				frequentRenterPoints++;
 				
